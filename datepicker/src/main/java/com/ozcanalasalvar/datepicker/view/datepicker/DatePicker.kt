@@ -77,7 +77,7 @@ class DatePicker : LinearLayout {
 
     private fun setAttributes() {
         pickerView?.offset = offset
-        pickerView?.yearsRange = IntRange(1922, 2128)
+        pickerView?.yearsRange = IntRange(0, 3000)
         pickerView?.startDate = date
         pickerView?.selectorEffectEnabled = true
         pickerView?.textSize = textSize

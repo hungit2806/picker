@@ -45,7 +45,7 @@ import java.text.DateFormatSymbols
 @Composable
 fun WheelDatePicker(
     offset: Int = 4,
-    yearsRange: IntRange = IntRange(1923, 2121),
+    yearsRange: IntRange = IntRange(0, 3000),
     startDate: Date = Date(DateUtils.getCurrentTime()),
     textSize: Int = 16,
     selectorEffectEnabled: Boolean = true,
@@ -89,6 +89,44 @@ fun WheelDatePicker(
                 .padding(start = 20.dp, end = 20.dp)
         ) {
 
+            WheelView(modifier = Modifier.weight(1f),
+                itemSize = DpSize(150.dp, height),
+                selection = years.indexOf(selectedDate.year),
+                itemCount = years.size,
+                rowOffset = offset,
+                isEndless = years.size > offset * 2,
+                selectorOption = SelectorOptions().copy(selectEffectEnabled = selectorEffectEnabled, enabled = false),
+                onFocusItem = {
+                    selectedDate = selectedDate.withYear(years[it])
+                },
+                content = {
+                    Text(
+                        text = "${years[it]}年",
+                        textAlign = TextAlign.Start,
+//                        modifier = Modifier.width(100.dp),
+                        fontSize = fontSize.sp,
+                        color = if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary
+                    )
+                })
+
+            WheelView(modifier = Modifier.weight(2f),
+                itemSize = DpSize(150.dp, height),
+                selection = maxOf(months.indexOf(selectedDate.month), 0),
+                itemCount = months.size,
+                rowOffset = offset,
+                selectorOption = SelectorOptions().copy(selectEffectEnabled = selectorEffectEnabled, enabled = false),
+                onFocusItem = {
+                    selectedDate = selectedDate.withMonth(months[it])
+                },
+                content = {
+                    Text(
+                        text = "${months[it] + 1}月",
+                        textAlign = TextAlign.Start,
+//                        modifier = Modifier.width(120.dp),
+                        fontSize = fontSize.sp,
+                        color = if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary
+                    )
+                })
 
             key(days.size) {
                 WheelView(modifier = Modifier.weight(1f),
@@ -102,54 +140,14 @@ fun WheelDatePicker(
                     },
                     content = {
                         Text(
-                            text = days[it].toString(),
+                            text = "${days[it]}日",
                             textAlign = TextAlign.End,
-                            modifier = Modifier.width(50.dp),
+//                            modifier = Modifier.width(50.dp),
                             fontSize = fontSize.sp,
                             color = if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary
                         )
                     })
             }
-
-            WheelView(modifier = Modifier.weight(2f),
-                itemSize = DpSize(150.dp, height),
-                selection = maxOf(months.indexOf(selectedDate.month), 0),
-                itemCount = months.size,
-                rowOffset = offset,
-                selectorOption = SelectorOptions().copy(selectEffectEnabled = selectorEffectEnabled, enabled = false),
-                onFocusItem = {
-                    selectedDate = selectedDate.withMonth(months[it])
-                },
-                content = {
-                    Text(
-                        text = DateFormatSymbols().months[months[it]],
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.width(120.dp),
-                        fontSize = fontSize.sp,
-                        color = if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary
-                    )
-                })
-
-
-            WheelView(modifier = Modifier.weight(1f),
-                itemSize = DpSize(150.dp, height),
-                selection = years.indexOf(selectedDate.year),
-                itemCount = years.size,
-                rowOffset = offset,
-                isEndless = years.size > offset * 2,
-                selectorOption = SelectorOptions().copy(selectEffectEnabled = selectorEffectEnabled, enabled = false),
-                onFocusItem = {
-                    selectedDate = selectedDate.withYear(years[it])
-                },
-                content = {
-                    Text(
-                        text = years[it].toString(),
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.width(100.dp),
-                        fontSize = fontSize.sp,
-                        color = if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary
-                    )
-                })
         }
 
         Box(
