@@ -50,9 +50,8 @@ fun WheelDatePicker(
     textSize: Int = 16,
     selectorEffectEnabled: Boolean = true,
     onDateChanged: (Int, Int, Int, Long) -> Unit = { _, _, _, _ -> },
-    darkModeEnabled: Boolean = true,
+    darkModeEnabled: Boolean = false,
 ) {
-
     var selectedDate by remember { mutableStateOf(startDate) }
 
     val months = selectedDate.monthsOfDate()
@@ -76,7 +75,7 @@ fun WheelDatePicker(
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Max)
-            .background(if (darkModeEnabled) PickerTheme.colors.primary else colorLightPrimary),
+            .background(if (darkModeEnabled) colorLightPrimary else colorLightPrimary),
         contentAlignment = Alignment.Center
     ) {
 
@@ -105,7 +104,7 @@ fun WheelDatePicker(
                         textAlign = TextAlign.Start,
 //                        modifier = Modifier.width(100.dp),
                         fontSize = fontSize.sp,
-                        color = if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary
+                        color = if (darkModeEnabled) colorLightTextPrimary else colorLightTextPrimary
                     )
                 })
 
@@ -124,7 +123,7 @@ fun WheelDatePicker(
                         textAlign = TextAlign.Start,
 //                        modifier = Modifier.width(120.dp),
                         fontSize = fontSize.sp,
-                        color = if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary
+                        color = if (darkModeEnabled) colorLightTextPrimary else colorLightTextPrimary
                     )
                 })
 
@@ -144,7 +143,7 @@ fun WheelDatePicker(
                             textAlign = TextAlign.End,
 //                            modifier = Modifier.width(50.dp),
                             fontSize = fontSize.sp,
-                            color = if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary
+                            color = if (darkModeEnabled) colorLightTextPrimary else colorLightTextPrimary
                         )
                     })
             }
@@ -155,7 +154,7 @@ fun WheelDatePicker(
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = if (darkModeEnabled) PickerTheme.pallets else lightPallet
+                        colors = if (darkModeEnabled) lightPallet else lightPallet
                     )
                 ),
         ) {}

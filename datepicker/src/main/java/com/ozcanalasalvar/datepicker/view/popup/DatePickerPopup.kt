@@ -43,7 +43,6 @@ class DatePickerPopup(private val context: Context) : BottomSheetDialogFragment(
             dismiss()
         }
 
-
         container.removeAllViews()
         container.addView(picker)
 
@@ -100,11 +99,6 @@ class DatePickerPopup(private val context: Context) : BottomSheetDialogFragment(
 
         fun offset(offset: Int): Builder {
             datePicker!!.setOffset(offset)
-            return this
-        }
-
-        fun darkModeEnabled(darkModeEnabled: Boolean): Builder {
-            datePicker!!.setDarkModeEnabled(darkModeEnabled)
             return this
         }
 

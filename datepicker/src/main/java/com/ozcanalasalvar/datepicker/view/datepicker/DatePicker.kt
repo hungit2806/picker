@@ -16,7 +16,9 @@ class DatePicker : LinearLayout {
     private var date: Date = Date(DateUtils.getCurrentTime())
     private var offset = 3
     private var textSize = 16
-    private var darkModeEnabled = true
+
+    var startYear = 0
+    var endYear = 3000
 
     constructor(context: Context) : super(context) {
         init(context, null, 0)
@@ -49,8 +51,6 @@ class DatePicker : LinearLayout {
             val attr = a.getIndex(i)
             if (attr == R.styleable.Picker_offset) {
                 offset = Math.min(a.getInteger(attr, 3), MAX_OFFSET)
-            } else if (attr == R.styleable.Picker_darkModeEnabled) {
-                darkModeEnabled = a.getBoolean(attr, true)
             } else if (attr == R.styleable.Picker_textSize) {
                 textSize = Math.min(a.getInt(attr, MAX_TEXT_SIZE), MAX_TEXT_SIZE)
             } else if (attr == R.styleable.Picker_pickerMode) {
@@ -77,12 +77,17 @@ class DatePicker : LinearLayout {
 
     private fun setAttributes() {
         pickerView?.offset = offset
-        pickerView?.yearsRange = IntRange(0, 3000)
+        pickerView?.yearsRange = IntRange(startYear, endYear)
         pickerView?.startDate = date
         pickerView?.selectorEffectEnabled = true
         pickerView?.textSize = textSize
-        pickerView?.darkModeEnabled= darkModeEnabled
         pickerView?.setDataChangeListener(dateChangeListener)
+    }
+
+    public fun setYearLimit(start: Int, end: Int) {
+        startYear = start
+        endYear = end
+        pickerView?.yearsRange = IntRange(startYear, endYear)
     }
 
 
@@ -113,20 +118,6 @@ class DatePicker : LinearLayout {
     @Deprecated("Unused method")
     fun setPickerMode(pickerMode: Int) {}
 
-    /**
-     * @return
-     */
-    fun isDarkModeEnabled(): Boolean {
-        return darkModeEnabled
-    }
-
-    /**
-     * @param darkModeEnabled
-     */
-    fun setDarkModeEnabled(darkModeEnabled: Boolean) {
-        this.darkModeEnabled = darkModeEnabled
-        setAttributes()
-    }
 
     interface DateChangeListener {
         fun onDateChanged(date: Long, day: Int, month: Int, year: Int)

@@ -43,7 +43,7 @@ fun WheelTimePicker(
     startTime: Time = Time(DateUtils.getCurrentHour(), DateUtils.getCurrentMinute()),
     textSize: Int = 16,
     onTimeChanged: (Int, Int, String?) -> Unit = { _, _, _ -> },
-    darkModeEnabled: Boolean = true,
+    darkModeEnabled: Boolean = false,
 ) {
 
     var selectedTime by remember { mutableStateOf(startTime) }

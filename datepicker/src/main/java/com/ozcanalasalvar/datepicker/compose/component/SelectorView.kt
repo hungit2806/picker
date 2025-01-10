@@ -25,7 +25,7 @@ fun SelectorView(modifier: Modifier = Modifier, darkModeEnabled: Boolean, offset
             modifier = Modifier
                 .weight(offset.toFloat())
                 .fillMaxWidth()
-                .background(if (darkModeEnabled) PickerTheme.colors.onbackground else colorLightOnBackground),
+                .background(if (darkModeEnabled) colorLightOnBackground else colorLightOnBackground),
         )
 
 
@@ -39,14 +39,14 @@ fun SelectorView(modifier: Modifier = Modifier, darkModeEnabled: Boolean, offset
                 modifier = Modifier
                     .height(0.5.dp)
                     .alpha(0.5f)
-                    .background(if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary)
+                    .background(if (darkModeEnabled) colorLightTextPrimary else colorLightTextPrimary)
                     .fillMaxWidth()
             )
             Box(
                 modifier = Modifier
                     .height(0.5.dp)
                     .alpha(0.5f)
-                    .background(if (darkModeEnabled) PickerTheme.colors.textPrimary else colorLightTextPrimary)
+                    .background(if (darkModeEnabled) colorLightTextPrimary else colorLightTextPrimary)
                     .fillMaxWidth()
             )
 
@@ -58,7 +58,7 @@ fun SelectorView(modifier: Modifier = Modifier, darkModeEnabled: Boolean, offset
             modifier = Modifier
                 .weight(offset.toFloat())
                 .fillMaxWidth()
-                .background(if (darkModeEnabled) PickerTheme.colors.onbackground else colorLightOnBackground),
+                .background(if (darkModeEnabled) colorLightOnBackground else colorLightOnBackground),
         )
     }
 }

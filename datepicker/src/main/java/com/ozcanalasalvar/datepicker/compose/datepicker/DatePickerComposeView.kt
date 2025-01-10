@@ -52,11 +52,6 @@ class DatePickerComposeView @JvmOverloads constructor(
             textSizeState.value = value
         }
 
-    var darkModeEnabled: Boolean
-        get() = darkModeEnabledState.value
-        set(value) {
-            darkModeEnabledState.value = value
-        }
 
     private var dateChangeListener: DatePicker.DateChangeListener? = null
     fun setDataChangeListener(dateChangeListener: DatePicker.DateChangeListener?) {

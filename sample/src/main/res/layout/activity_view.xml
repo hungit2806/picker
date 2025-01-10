@@ -16,7 +16,6 @@
             android:id="@+id/datepicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:darkModeEnabled="true"
             app:offset="3"
             app:textSize="19" />
 
@@ -39,7 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:darkModeEnabled="true"
             app:is24HourViewEnabled="false"
             app:offset="2"
             app:textSize="17" />
@@ -63,7 +61,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:darkModeEnabled="true"
             app:is24HourViewEnabled="true"
             app:offset="2"
             app:textSize="17" />
