@@ -1,5 +1,5 @@
 # DatePicker&TimePicker
-Picker is a date and time picker library that supports view-based and jetpack compose UI design.
+Picker is a date and time picker library that supports view-based and jetpack compose UI design .
 
 The library has many different feature options to customize your widget. Also checkout this [Wheelview](https://github.com/ozcanalasalvar/Wheelview).
 
