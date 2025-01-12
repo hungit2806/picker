@@ -68,7 +68,7 @@ fun InfiniteWheelViewImpl(
                 if (indexToFocus > maxItem) {
                     offset = indexToFocus - maxItem
                 }
-                if (offset != 0 && indexToFocus - offset > 0) {
+                if (offset != 0 && indexToFocus - offset >= 0) {
                     onFocusItem(indexToFocus - offset)
 
 //            if (state.firstVisibleItemScrollOffset != 0) {

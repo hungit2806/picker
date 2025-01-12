@@ -1,16 +1,19 @@
 package com.ozcanalasalvar.datepicker.view.popup
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ozcanalasalvar.library.R
 import com.ozcanalasalvar.datepicker.model.Date
 import com.ozcanalasalvar.datepicker.view.datepicker.DatePicker
+import java.time.LocalDateTime
 
 class DatePickerPopup(private val context: Context) : BottomSheetDialogFragment() {
     private var listener: DateSelectListener? = null
@@ -20,6 +23,7 @@ class DatePickerPopup(private val context: Context) : BottomSheetDialogFragment(
     private var selectedDate: Long? = null
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -42,7 +46,13 @@ class DatePickerPopup(private val context: Context) : BottomSheetDialogFragment(
         cancel.setOnClickListener { view: View? ->
             dismiss()
         }
-        picker.setDateLimit(Date(2015, 1,1), Date(2025, 5, 12))
+        val currentDate = LocalDateTime.now()
+        picker.setDateLimit(
+            Date(1900, 0, 1), Date(
+                currentDate.year,
+                currentDate.monthValue - 1, currentDate.dayOfMonth
+            )
+        )
         container.removeAllViews()
         container.addView(picker)
 
