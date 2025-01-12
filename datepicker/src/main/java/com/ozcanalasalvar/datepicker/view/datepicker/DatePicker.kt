@@ -8,6 +8,7 @@ import com.ozcanalasalvar.library.R
 import com.ozcanalasalvar.datepicker.compose.datepicker.DatePickerComposeView
 import com.ozcanalasalvar.datepicker.model.Date
 import com.ozcanalasalvar.datepicker.utils.DateUtils
+import java.util.Calendar
 
 class DatePicker : LinearLayout {
     private var context: Context? = null
@@ -19,6 +20,9 @@ class DatePicker : LinearLayout {
 
     var startYear = 0
     var endYear = 3000
+
+    var startDateLimit: Date = Date(1900, 0, 1)
+    var endDateLimit: Date = Date(3000, 11, 31)
 
     constructor(context: Context) : super(context) {
         init(context, null, 0)
@@ -88,6 +92,13 @@ class DatePicker : LinearLayout {
         startYear = start
         endYear = end
         pickerView?.yearsRange = IntRange(startYear, endYear)
+    }
+
+    fun setDateLimit(start: Date, end: Date) {
+        startDateLimit = start
+        startDateLimit = end
+        pickerView?.startDateLimit = start
+        pickerView?.endDateLimit = end
     }
 
 

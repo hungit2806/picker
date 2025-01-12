@@ -22,6 +22,9 @@ class DatePickerComposeView @JvmOverloads constructor(
     private val selectorEffectEnabledState = mutableStateOf(true)
     private val textSizeState = mutableStateOf(17)
     private val darkModeEnabledState = mutableStateOf(true)
+    private val startDateLimitState = mutableStateOf(Date(1900, 0, 1))
+    private val endDateLimitState = mutableStateOf(Date(3000, 11, 31))
+
     var offset: Int
         get() = offsetState.value
         set(value) {
@@ -38,6 +41,18 @@ class DatePickerComposeView @JvmOverloads constructor(
         get() = startDateState.value
         set(value) {
             startDateState.value = value
+        }
+
+    var startDateLimit: Date
+        get() = startDateLimitState.value
+        set(value) {
+            startDateLimitState.value = value
+        }
+
+    var endDateLimit: Date
+        get() = endDateLimitState.value
+        set(value) {
+            endDateLimitState.value = value
         }
 
     var selectorEffectEnabled: Boolean
@@ -65,15 +80,19 @@ class DatePickerComposeView @JvmOverloads constructor(
     @Composable
     override fun Content() {
         setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-        WheelDatePicker(offset = offsetState.value,
+        WheelDatePicker(
+            offset = offsetState.value,
             yearsRange = yearsRangeState.value,
             startDate = startDateState.value,
             selectorEffectEnabled = selectorEffectEnabledState.value,
-            textSize= textSizeState.value,
+            textSize = textSizeState.value,
             onDateChanged = { day, month, year, date ->
                 dateChangeListener?.onDateChanged(date, day, month, year)
             },
-            darkModeEnabled = darkModeEnabledState.value)
+            darkModeEnabled = darkModeEnabledState.value,
+            startDateLimit = startDateLimitState.value,
+            endDateLimit = endDateLimitState.value
+        )
     }
 
 

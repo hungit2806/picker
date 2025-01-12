@@ -42,7 +42,7 @@ class DatePickerPopup(private val context: Context) : BottomSheetDialogFragment(
         cancel.setOnClickListener { view: View? ->
             dismiss()
         }
-
+        picker.setDateLimit(Date(2015, 1,1), Date(2025, 5, 12))
         container.removeAllViews()
         container.addView(picker)
 

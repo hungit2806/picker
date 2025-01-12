@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
@@ -33,8 +34,10 @@ import com.ozcanalasalvar.datepicker.utils.withMonth
 import com.ozcanalasalvar.datepicker.utils.withYear
 import com.ozcanalasalvar.datepicker.model.Date
 import com.ozcanalasalvar.datepicker.ui.theme.PickerTheme
+import com.ozcanalasalvar.datepicker.ui.theme.colorDisableItem
 import com.ozcanalasalvar.datepicker.ui.theme.colorLightPrimary
 import com.ozcanalasalvar.datepicker.ui.theme.colorLightTextPrimary
+import com.ozcanalasalvar.datepicker.ui.theme.colorLightTextSecondary
 import com.ozcanalasalvar.datepicker.ui.theme.lightPallet
 import com.ozcanalasalvar.datepicker.utils.DateUtils
 import com.ozcanalasalvar.wheelview.WheelView
@@ -51,15 +54,17 @@ fun WheelDatePicker(
     selectorEffectEnabled: Boolean = true,
     onDateChanged: (Int, Int, Int, Long) -> Unit = { _, _, _, _ -> },
     darkModeEnabled: Boolean = false,
+    startDateLimit: Date = Date(1900, 0, 1),
+    endDateLimit: Date = Date(3000, 11, 31)
 ) {
     var selectedDate by remember { mutableStateOf(startDate) }
 
-    val months = selectedDate.monthsOfDate()
+    val months = selectedDate.monthsOfDate(startDateLimit, endDateLimit)
 
-    val days = selectedDate.daysOfDate()
+    val days = selectedDate.daysOfDate(startDateLimit, endDateLimit)
 
     val years = mutableListOf<Int>().apply {
-        for (year in yearsRange) {
+        for (year in IntRange(startDateLimit.year, endDateLimit.year)) {
             add(year)
         }
     }
@@ -68,8 +73,26 @@ fun WheelDatePicker(
         onDateChanged(selectedDate.day, selectedDate.month, selectedDate.year, selectedDate.date)
     }
 
+
     val fontSize = maxOf(13, minOf(19, textSize))
 
+    fun getDayTextColor(it: Int): Color {
+        val limit =
+            if (selectedDate.year == endDateLimit.year && selectedDate.month == endDateLimit.month) endDateLimit.day - 1 else -1
+        if (limit != -1 && it > limit) {
+            return colorDisableItem
+        }
+        return colorLightTextPrimary
+    }
+
+    fun getMonthTextColor(it: Int): Color {
+        val limit =
+            if (selectedDate.year == endDateLimit.year) endDateLimit.month else -1
+        if (limit != -1 && it > limit) {
+            return colorDisableItem
+        }
+        return colorLightTextPrimary
+    }
 
     Box(
         modifier = Modifier
@@ -94,7 +117,10 @@ fun WheelDatePicker(
                 itemCount = years.size,
                 rowOffset = offset,
                 isEndless = years.size > offset * 2,
-                selectorOption = SelectorOptions().copy(selectEffectEnabled = selectorEffectEnabled, enabled = false),
+                selectorOption = SelectorOptions().copy(
+                    selectEffectEnabled = selectorEffectEnabled,
+                    enabled = false
+                ),
                 onFocusItem = {
                     selectedDate = selectedDate.withYear(years[it])
                 },
@@ -104,46 +130,54 @@ fun WheelDatePicker(
                         textAlign = TextAlign.Start,
 //                        modifier = Modifier.width(100.dp),
                         fontSize = fontSize.sp,
-                        color = if (darkModeEnabled) colorLightTextPrimary else colorLightTextPrimary
+                        color = colorLightTextPrimary
                     )
                 })
-
+//            key(months.size) {
             WheelView(modifier = Modifier.weight(2f),
                 itemSize = DpSize(150.dp, height),
                 selection = maxOf(months.indexOf(selectedDate.month), 0),
                 itemCount = months.size,
                 rowOffset = offset,
-                selectorOption = SelectorOptions().copy(selectEffectEnabled = selectorEffectEnabled, enabled = false),
+                selectorOption = SelectorOptions().copy(
+                    selectEffectEnabled = selectorEffectEnabled,
+                    enabled = false
+                ),
                 onFocusItem = {
                     selectedDate = selectedDate.withMonth(months[it])
                 },
+                maxItem = if (selectedDate.year == endDateLimit.year) endDateLimit.month else -1,
                 content = {
                     Text(
                         text = "${months[it] + 1}月",
                         textAlign = TextAlign.Start,
 //                        modifier = Modifier.width(120.dp),
                         fontSize = fontSize.sp,
-                        color = if (darkModeEnabled) colorLightTextPrimary else colorLightTextPrimary
+                        color = getMonthTextColor(it)
                     )
                 })
-
+//            }
             key(days.size) {
                 WheelView(modifier = Modifier.weight(1f),
                     itemSize = DpSize(150.dp, height),
                     selection = maxOf(days.indexOf(selectedDate.day), 0),
                     itemCount = days.size,
                     rowOffset = offset,
-                    selectorOption = SelectorOptions().copy(selectEffectEnabled = selectorEffectEnabled, enabled = false),
+                    selectorOption = SelectorOptions().copy(
+                        selectEffectEnabled = selectorEffectEnabled,
+                        enabled = false
+                    ),
                     onFocusItem = {
                         selectedDate = selectedDate.withDay(days[it])
                     },
+                    maxItem = if (selectedDate.year == endDateLimit.year && selectedDate.month == endDateLimit.month) endDateLimit.day - 1 else -1,
                     content = {
                         Text(
                             text = "${days[it]}日",
                             textAlign = TextAlign.End,
 //                            modifier = Modifier.width(50.dp),
                             fontSize = fontSize.sp,
-                            color = if (darkModeEnabled) colorLightTextPrimary else colorLightTextPrimary
+                            color = getDayTextColor(it)
                         )
                     })
             }
@@ -159,8 +193,7 @@ fun WheelDatePicker(
                 ),
         ) {}
 
-        SelectorView(darkModeEnabled= darkModeEnabled, offset = offset)
-
+        SelectorView(darkModeEnabled = darkModeEnabled, offset = offset)
 
 
     }
@@ -172,5 +205,7 @@ fun WheelDatePicker(
 @Preview
 @Composable
 fun DatePickerPreview() {
-    WheelDatePicker(onDateChanged = { _, _, _, _ -> })
+    WheelDatePicker(
+        onDateChanged = { _, _, _, _ -> },
+    )
 }

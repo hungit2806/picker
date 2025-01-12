@@ -20,9 +20,9 @@ fun WheelView(
     userScrollEnabled: Boolean = true,
     selectorOption: SelectorOptions = SelectorOptions(),
     lazyWheelState: LazyListState? = null,
+    maxItem: Int = -1,
     content: @Composable LazyItemScope.(index: Int) -> Unit,
 ) {
-
     InfiniteWheelViewImpl(
         modifier = modifier,
         itemSize = itemSize,
@@ -34,6 +34,7 @@ fun WheelView(
         userScrollEnabled = userScrollEnabled,
         selectorOption = selectorOption,
         lazyWheelState = lazyWheelState,
+        maxItem = maxItem
     ) {
         content(it)
     }

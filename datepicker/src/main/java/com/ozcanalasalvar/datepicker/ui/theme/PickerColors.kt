@@ -71,6 +71,8 @@ val colorDarkBackground = Color(0xFF090A0A)
 val colorDarkOnBackground = Color(0x99000000)
 val colorDarkError = Color(0xFFD62222)
 
+val colorDisableItem = Color(0xFFD2D2D2)
+
 fun lightColors(
     primary: Color = colorLightPrimary,
     textPrimary: Color = colorLightTextPrimary,

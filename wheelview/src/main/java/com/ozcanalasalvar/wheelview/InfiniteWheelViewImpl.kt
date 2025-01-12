@@ -35,6 +35,7 @@ fun InfiniteWheelViewImpl(
     selectorOption: SelectorOptions,
     userScrollEnabled: Boolean = true,
     lazyWheelState: LazyListState? = null,
+    maxItem: Int = -1,
     content: @Composable LazyItemScope.(index: Int) -> Unit,
 ) {
 
@@ -55,6 +56,29 @@ fun InfiniteWheelViewImpl(
         derivedStateOf { state.firstVisibleItemIndex + rowOffsetCount }
     }
 
+    LaunchedEffect(maxItem) {
+        if(maxItem != -1) {
+            calculateIndexToFocus(state, size.height).let {
+                var offset = 0
+                val indexToFocus = if (isEndless) {
+                    (it + rowOffsetCount) % itemCount
+                } else {
+                    ((it + rowOffsetCount) % count) - rowOffset
+                }
+                if (indexToFocus > maxItem) {
+                    offset = indexToFocus - maxItem
+                }
+                if (offset != 0 && indexToFocus - offset > 0) {
+                    onFocusItem(indexToFocus - offset)
+
+//            if (state.firstVisibleItemScrollOffset != 0) {
+                    state.scrollToItem(it - offset, -1)
+                }
+//            }
+            }
+        }
+    }
+
     LaunchedEffect(key1 = itemCount) {
         coroutineScope.launch {
             state.scrollToItem(startIndex)
@@ -64,16 +88,20 @@ fun InfiniteWheelViewImpl(
     LaunchedEffect(key1 = isScrollInProgress) {
         if (!isScrollInProgress) {
             calculateIndexToFocus(state, size.height).let {
-                val indexToFocus = if (isEndless) {
+                var offset = 0
+                var indexToFocus = if (isEndless) {
                     (it + rowOffsetCount) % itemCount
                 } else {
                     ((it + rowOffsetCount) % count) - rowOffset
                 }
+                if(indexToFocus > maxItem && maxItem != -1){
+                    offset = indexToFocus - maxItem
+                }
 
-                onFocusItem(indexToFocus)
+                onFocusItem(indexToFocus - offset)
                 if (state.firstVisibleItemScrollOffset != 0) {
                     coroutineScope.launch {
-                        state.animateScrollToItem(it, 0)
+                        state.animateScrollToItem(it - offset, 0)
                     }
                 }
             }

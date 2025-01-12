@@ -3,14 +3,14 @@ package com.ozcanalasalvar.datepicker.utils
 import com.ozcanalasalvar.datepicker.model.Date
 
 
-fun Date.monthsOfDate(): List<Int> {
+fun Date.monthsOfDate(startDate: Date, endDate: Date): List<Int> {
     val months = mutableListOf<Int>()
-//    if (this.year == minDate.year) {
-//        for (month in minDate.month..11) {
+//    if (this.year == startDate.year) {
+//        for (month in startDate.month..11) {
 //            months.add(month)
 //        }
-//    } else if (this.year == maxDate.year) {
-//        for (month in 0..maxDate.month) {
+//    } else if (this.year == endDate.year) {
+//        for (month in 0..endDate.month) {
 //            months.add(month)
 //        }
 //    } else {
@@ -23,16 +23,16 @@ fun Date.monthsOfDate(): List<Int> {
 }
 
 
-fun Date.daysOfDate(): List<Int> {
+fun Date.daysOfDate(startDate: Date, endDate: Date): List<Int> {
     val days = mutableListOf<Int>()
     val monthDayCount = DateUtils.getMonthDayCount(this.date)
-
-//    if (this.year == minDate.year && this.month == minDate.month && minDate.day != 1) {
-//        for (day in minDate.day..monthDayCount) {
+//
+//    if (this.year == startDate.year && this.month == startDate.month && startDate.day != 1) {
+//        for (day in startDate.day..monthDayCount) {
 //            days.add(day)
 //        }
-//    } else if (this.year == maxDate.year && this.month == maxDate.month && maxDate.day != monthDayCount) {
-//        for (day in 1..maxDate.day) {
+//    } else if (this.year == endDate.year && this.month == endDate.month && endDate.day != monthDayCount) {
+//        for (day in 1..endDate.day) {
 //            days.add(day)
 //        }
 //    } else {
